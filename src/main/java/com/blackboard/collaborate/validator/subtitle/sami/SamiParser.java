@@ -1,9 +1,9 @@
 /*
  * Title: SamiParser
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -93,7 +93,7 @@ public class SamiParser extends BaseSubtitleParser {
                 long time = 0;
 
                 try {
-                    time = Long.valueOf(startTime + subtitleOffset);
+                    time = Long.parseLong(startTime) + subtitleOffset;
                 } catch (NumberFormatException e) {
                     notifyError("Unable to parse start time: " + textLine);
                 }

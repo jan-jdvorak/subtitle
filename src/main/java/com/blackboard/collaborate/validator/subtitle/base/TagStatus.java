@@ -1,6 +1,6 @@
 /*
- * Title: TtmlParser
- * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Title: TagStatus
+ * Copyright (c) 2018. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
  * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
@@ -10,10 +10,13 @@
  * file that was distributed with this source code.
  */
 
-package com.blackboard.collaborate.validator.subtitle.ttml;
+package com.blackboard.collaborate.validator.subtitle.base;
 
 /**
- * Created by clebeaupin on 11/10/15.
+ * Parsing status of a cue tag
  */
-public class TtmlParser {
+public enum TagStatus {
+    NONE,
+    OPEN,
+    CLOSE
 }

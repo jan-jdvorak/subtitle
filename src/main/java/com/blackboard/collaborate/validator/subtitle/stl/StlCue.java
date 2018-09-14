@@ -1,9 +1,9 @@
 /*
  * Title: StlCue
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -75,7 +75,7 @@ public class StlCue extends BaseSubtitleCue implements SubtitleRegionCue {
 
                 // If not defined, create new text with new style
                 if (text == null) {
-                    text = new String();
+                    text = "";
                     textStyle = new SubtitleStyle();
 
                     // Start ingesting text before start box directive (0x0b)

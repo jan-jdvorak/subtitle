@@ -1,9 +1,9 @@
 /*
  * Title: ConvertTest
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -41,27 +41,27 @@ public class ConvertTest {
     }
 
     @Test
-    public void testSrt2VttConvert() throws IOException {
+    public void testSrt2VttConvert() {
         convert("src/test/resources/srt/standard.srt", ".vtt", true);
     }
 
     @Test
-    public void testVtt2SrtConvert() throws IOException {
+    public void testVtt2SrtConvert() {
         convert("src/test/resources/vtt/comments.vtt", ".srt", true);
     }
 
     @Test
-    public void testVtt2VttConvert1() throws IOException {
+    public void testVtt2VttConvert1() {
         convert("src/test/resources/vtt/comments.vtt", ".vtt", true);
     }
 
     @Test
-    public void testVtt2VttConvert2() throws IOException {
+    public void testVtt2VttConvert2() {
         convert("src/test/resources/vtt/Collab-recording_CR.vtt", ".vtt", true);
     }
 
     @Test
-    public void testVtt2VttConvert3() throws IOException {
+    public void testVtt2VttConvert3() {
         convert("src/test/resources/vtt/css_styles.vtt", ".vtt", false);
     }
 }

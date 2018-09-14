@@ -1,9 +1,9 @@
 /*
  * Title: VttParser
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -39,8 +39,7 @@ public class VttParser extends BaseSubtitleParser {
         NOTE,
         CUE_ID,
         CUE_TIMECODE,
-        EMPTY_LINE,
-        EOF
+        EMPTY_LINE
     }
 
     public VttParser(ValidationReporter reporter, SubtitleReader reader) {
@@ -56,9 +55,7 @@ public class VttParser extends BaseSubtitleParser {
     private VttEvent getNextEvent(String line, boolean cues) {
         VttEvent foundEvent;
 
-        if (line == null) {
-            foundEvent = VttEvent.EOF;
-        } else if (line.startsWith(STYLE_START)) {
+        if (line.startsWith(STYLE_START)) {
             if (cues) {
                 String msg = STYLE_START + " inside cues";
                 notifyError(msg);

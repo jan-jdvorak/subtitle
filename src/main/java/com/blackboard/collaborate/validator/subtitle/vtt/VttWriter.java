@@ -1,9 +1,9 @@
 /*
  * Title: VttWriter
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -15,7 +15,7 @@ package com.blackboard.collaborate.validator.subtitle.vtt;
 import com.blackboard.collaborate.validator.subtitle.model.SubtitleCue;
 import com.blackboard.collaborate.validator.subtitle.model.SubtitleObject;
 import com.blackboard.collaborate.validator.subtitle.model.SubtitleWriter;
-import com.blackboard.collaborate.validator.subtitle.util.SubtitleTimeCode;
+import com.blackboard.collaborate.validator.subtitle.util.TimeCodeParser;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,11 +59,11 @@ public class VttWriter implements SubtitleWriter {
         }
 
         // Write Start time and end time
-        writer.write(formatTimeCode(cue.getStartTime()));
+        writer.write(TimeCodeParser.formatVtt(cue.getStartTime()));
         writer.write(" ");
         writer.write(VttParser.ARROW);
         writer.write(" ");
-        writer.write(formatTimeCode(cue.getEndTime()));
+        writer.write(TimeCodeParser.formatVtt(cue.getEndTime()));
 
         // TODO: write VTT cue settings if any
         Iterable<Map.Entry<String, String>> settings = cue.getSettings();
@@ -80,23 +80,6 @@ public class VttWriter implements SubtitleWriter {
 
         // Write text
         writer.write(cue.getText());
-    }
-
-    private static String formatTimeCode(SubtitleTimeCode timeCode) {
-        int hours = timeCode.getHour();
-        if (hours == 0) {
-            return String.format("%02d:%02d.%03d",
-                    timeCode.getMinute(),
-                    timeCode.getSecond(),
-                    timeCode.getMillisecond());
-        }
-        else {
-            return String.format("%02d:%02d:%02d.%03d",
-                    timeCode.getHour(),
-                    timeCode.getMinute(),
-                    timeCode.getSecond(),
-                    timeCode.getMillisecond());
-        }
     }
 
     @Override

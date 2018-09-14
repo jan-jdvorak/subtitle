@@ -1,9 +1,9 @@
 /*
  * Title: TestUtils
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -90,16 +89,13 @@ public final class TestUtils {
             props.load(is);
         }
 
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(testDir)) {
-            for (Path path : directoryStream) {
-                Path fileName = path.getFileName();
-                String fileStr = fileName.toString();
-                String errStr = props.getProperty(fileStr);
-                if (errStr != null) {
-                    int errors = Integer.parseInt(errStr);
-                    testFile(path.toString(), errors);
-                }
+        props.stringPropertyNames().forEach(fileStr -> {
+            String errStr = props.getProperty(fileStr);
+            int errors = Integer.parseInt(errStr);
+            Path path = testDir.resolve(fileStr);
+            if (Files.exists(path)) {
+                testFile(path.toString(), errors);
             }
-        }
+        });
     }
 }

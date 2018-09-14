@@ -1,9 +1,9 @@
 /*
  * Title: StlParser
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -100,14 +100,6 @@ public class StlParser extends BaseSubtitleParser {
 
         // Build time code
         return new SubtitleTimeCode(hour, minute, second, frame*frameDuration);
-    }
-
-    private String readString(DataInputStream dis, int length, Charset charset) throws IOException {
-        byte[] bytes = new byte[length];
-        dis.readFully(bytes, 0, length);
-
-        // Remove spaces at start and end of the string
-        return new String(bytes, charset).trim();
     }
 
     private String readString(DataInputStream dis, int length) throws IOException {

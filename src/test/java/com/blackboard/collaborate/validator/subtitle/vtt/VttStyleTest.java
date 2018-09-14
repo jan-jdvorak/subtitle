@@ -1,9 +1,9 @@
 /*
  * Title: VttStyleTest
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -28,7 +28,7 @@ public class VttStyleTest {
     private void testParserPri(String css, int errors) {
         CountingValidationListener listener = new CountingValidationListener();
 
-        System.out.println("TESTING: " + css);
+        System.out.print("TESTING: " + css);
         try (SubtitleReader reader = new SubtitleReader(new StringReader(css))) {
             ValidationReporterImpl reporter = new ValidationReporterImpl(reader);
             reporter.addValidationListener(listener);

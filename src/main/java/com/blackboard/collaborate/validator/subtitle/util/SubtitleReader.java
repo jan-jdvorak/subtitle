@@ -1,9 +1,9 @@
 /*
  * Title: SubtitleReader
- * Copyright: Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
+ * Copyright (c) 2017. Blackboard Inc. and its subsidiary companies.
  *
  * This program is based on noophq/subtitle.
- * (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
+ * Copyright (c) 2015-2016 Cyrille Lebeaupin <clebeaupin@noop.fr>
  *
  * This program is free software licensed under the GNU Lesser General Public License v3.
  * For the full copyright and license information, please view the LICENSE
@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
  */
 public class SubtitleReader extends LineNumberReader implements ParsePositionProvider {
     private int column; // current column (char in line)
+    private int markedColumn;
 
     public SubtitleReader(Reader in) {
         super(in);
@@ -76,24 +77,42 @@ public class SubtitleReader extends LineNumberReader implements ParsePositionPro
         return column;
     }
 
+    public void mark(int readAheadLimit) throws IOException {
+        synchronized (lock) {
+            super.mark(readAheadLimit);
+            markedColumn = column;
+        }
+    }
+
+    public void reset() throws IOException {
+        synchronized (lock) {
+            super.reset();
+            column = markedColumn;
+        }
+    }
+
     /**
      *
      * @return Next character, but does not change position.
      * @throws IOException when an IO exception occur
      */
     public int lookNext() throws IOException {
-        mark(1);
-        int c = read();
-        reset();
-        return c;
+        synchronized (lock) {
+            mark(1);
+            int c = read();
+            reset();
+            return c;
+        }
     }
 
     public CharBuffer lookNext(int len) throws IOException {
-        mark(len);
+        synchronized (lock) {
+            mark(len);
 
-        CharBuffer cb = CharBuffer.allocate(len);
-        int read = this.read(cb);
-        reset();
-        return cb.asReadOnlyBuffer();
+            CharBuffer cb = CharBuffer.allocate(len);
+            int read = this.read(cb);
+            reset();
+            return cb.asReadOnlyBuffer();
+        }
     }
 }
