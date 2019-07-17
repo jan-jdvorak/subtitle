@@ -14,6 +14,8 @@ package com.blackboard.collaborate.validator.subtitle.util;
 
 import com.blackboard.collaborate.validator.subtitle.model.ValidationReporter;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,29 +31,52 @@ public class EntityParser {
             0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9E, 0x9F
     );
 
-    public static void parse(ValidationReporter reporter, String entity) {
+    public static int accumulate(Reader reader, StringBuilder entity) throws IOException {
+        int c = reader.read();
+        while (c != -1 && c != '<' && c != '>' && c != '&' && !Character.isWhitespace(c) && c != ';') {
+            entity.append((char) c);
+            c = reader.read();
+        }
+        return c;
+    }
+
+    public static void notify(ValidationReporter reporter, String msg, boolean strict) {
+        if (strict) {
+            reporter.notifyError(msg);
+        } else {
+            reporter.notifyWarning(msg);
+        }
+    }
+
+    public static boolean parse(ValidationReporter reporter, String entity, boolean strict) {
         if (entity.startsWith("#") && entity.length() > 1) {
             int code;
+            String toParse;
+            int radix;
+
             if (entity.charAt(1) == 'x' || entity.charAt(1) == 'X') {
-                try {
-                    code = Integer.parseInt(entity.substring(2), 16);
-                } catch (NumberFormatException e) {
-                    reporter.notifyError("Invalid entity code: '&" + entity + ";'");
-                    return;
-                }
+                radix = 16;
+                toParse = entity.substring(2);
             } else {
-                try {
-                    code = Integer.parseInt(entity);
-                } catch (NumberFormatException e) {
-                    reporter.notifyError("Invalid entity code: '&" + entity + ";'");
-                    return;
-                }
+                radix = 10;
+                toParse = entity;
             }
-            if (Collections.binarySearch(FORBIDDEN_CODES, code) < 0 || (code >= 0xD800 && code <= 0xDFFF) || code > 0x10FFFF) {
-                reporter.notifyError("Forbidden entity code: '&" + entity + ";'");
+
+            try {
+                code = Integer.parseInt(toParse, radix);
+            } catch (NumberFormatException e) {
+                notify(reporter, "Invalid entity code: '&" + entity + ";'", strict);
+                return false;
+            }
+
+            if (Collections.binarySearch(FORBIDDEN_CODES, code) >= 0 || (code >= 0xD800 && code <= 0xDFFF) || code > 0x10FFFF) {
+                notify(reporter, "Forbidden entity code: '&" + entity + ";'", strict);
+                return false;
             }
         } else if (!entityPattern.matcher(entity).matches()) {
-            reporter.notifyError("Invalid entity name: '&" + entity + ";'");
+            notify(reporter, "Invalid entity name: '&" + entity + "'", strict);
+            return false;
         }
+        return true;
     }
 }

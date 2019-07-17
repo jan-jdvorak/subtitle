@@ -39,7 +39,6 @@ public class SrtCueTest {
             cue.parseCueText(reader);
 
             listener.exactAssert("", errors);
-
         } catch (AssertionError e) {
             System.out.println(" ...ERROR");
             throw e;
@@ -99,5 +98,17 @@ public class SrtCueTest {
     @Test
     public void testCueText13() {
         testCueText("start text <b>bla bla <i>blab la<b>b2</b>erwfwfw</i>wwefwe</b>wfwefwe", 1);
+    }
+
+    // HTML entities error
+    @Test
+    public void testCueText14() {
+        testCueText("start & &gt; && &ne@smysl &nesmysl end", 7);
+    }
+
+    // HTML entities ok
+    @Test
+    public void testCueText15() {
+        testCueText("start &gt; &lt;x&amp;;;", 0);
     }
 }
