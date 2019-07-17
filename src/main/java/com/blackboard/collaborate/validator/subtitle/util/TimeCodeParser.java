@@ -36,6 +36,8 @@ public class TimeCodeParser {
 
     /**
      * Match srt timecode.
+     * @param timeCodeString time code string
+     * @return True if matches
      */
     public static boolean matchesSrt(String timeCodeString) {
         Matcher matcher = pattern.matcher(timeCodeString);
@@ -44,6 +46,8 @@ public class TimeCodeParser {
 
     /**
      * Match vtt timecode.
+     * @param timeCodeString time code string
+     * @return True if matches
      */
     public static boolean matchesVtt(String timeCodeString) {
         Matcher matcher = pattern.matcher(timeCodeString);
@@ -52,10 +56,10 @@ public class TimeCodeParser {
 
     /**
      * Parse srt timecode.
-     * @param reporter
-     * @param timeCodeString
+     * @param reporter Validation reporter
+     * @param timeCodeString Time code string
      * @param subtitleOffset Offset in millis
-     * @return
+     * @return timecode instance
      */
     public static SubtitleTimeCode parseSrt(ValidationReporter reporter, String timeCodeString, int subtitleOffset) {
         return parse(reporter, ",", timeCodeString, subtitleOffset);
@@ -63,10 +67,10 @@ public class TimeCodeParser {
 
     /**
      * Parse vtt timecode.
-     * @param reporter
-     * @param timeCodeString
+     * @param reporter Validation reporter
+     * @param timeCodeString Time code string
      * @param subtitleOffset Offset in millis
-     * @return
+     * @return timecode instance
      */
     public static SubtitleTimeCode parseVtt(ValidationReporter reporter, String timeCodeString, int subtitleOffset) {
         return parse(reporter, ".", timeCodeString, subtitleOffset);

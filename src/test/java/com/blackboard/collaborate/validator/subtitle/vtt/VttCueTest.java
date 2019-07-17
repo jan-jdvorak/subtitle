@@ -144,4 +144,16 @@ public class VttCueTest {
     public void testCueText15() {
         testCueText("aaa<aa&amp;bb>xxx</aa&amp;bb>", 1);
     }
+
+    // HTML entities error
+    @Test
+    public void testCueText16() {
+        testCueText("start & &gt; && &ne@smysl &nesmysl end", 7);
+    }
+
+    // HTML entities ok
+    @Test
+    public void testCueText17() {
+        testCueText("start &gt; &#x70; &lt;x&amp;;;", 0);
+    }
 }

@@ -43,6 +43,7 @@ public class SrtCue extends BaseSubtitleCue {
 
     private final ValidationReporter reporter;
     private final SrtObject srtObject;
+    private final boolean strict = false; // strict HTML entity parsing - TODO: make it configurable
 
     @Getter
     private CueTreeNode tree;
@@ -202,22 +203,29 @@ public class SrtCue extends BaseSubtitleCue {
 
             } else if (c == '&') {
                 StringBuilder entity = new StringBuilder();
-                c = reader.read();
-                while (c != -1 && c != '<' && c != '&' && !Character.isWhitespace(c) && c != ';') {
-                    entity.append((char) c);
-                    c = reader.read();
+                c = EntityParser.accumulate(reader, entity);
+                boolean hasSemicol = (c == ';');
+                boolean ok = true;
+
+                if (!hasSemicol) {
+                    ok = !strict;
+                    EntityParser.notify(reporter, "Missing ';' in entity " + entity, strict);
                 }
-                if (c != ';') {
-                    reporter.notifyWarning("Missing ';' in entity " + entity);
-                }
-                EntityParser.parse(reporter, entity.toString());
+
+                ok &= EntityParser.parse(reporter, entity.toString(), strict);
+                StringBuilder builder;
                 if (tagStatus == TagStatus.NONE) {
-                    textBuilder.append("&" + entity + ";"); // TODO: add resolved?
+                    builder = textBuilder;
                 } else {
-                    tagBuilder.append("&" + entity + ";"); // TODO: add resolved?
+                    builder = tagBuilder;
                 }
-            }
-            else {
+
+                builder.append("&").append(entity);
+                if (ok && !hasSemicol) {
+                    builder.append(";"); // add missing semilocon
+                }
+                builder.append(c);
+            } else {
                 switch (tagStatus) {
                     case CLOSE:
                     case OPEN:

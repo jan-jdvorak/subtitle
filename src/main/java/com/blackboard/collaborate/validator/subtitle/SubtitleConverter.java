@@ -145,7 +145,7 @@ public class SubtitleConverter {
      * @param outFormat output subtitle format
      * @param listener optional listener to be notified about subtitle validation errors
      * @param strictMode If true, fail on validation errors
-     * @throws SubtitleException
+     * @throws SubtitleException When conversion fails
      */
     public void convert(InputStream inStream, Format inFormat, OutputStream outputStream, Format outFormat, ValidationListener listener, boolean strictMode)
             throws SubtitleException {
