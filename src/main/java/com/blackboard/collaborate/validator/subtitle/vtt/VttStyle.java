@@ -371,8 +371,7 @@ public class VttStyle {
             ws();
             if (!expect(Token.RPAREN)) {
                 return false;
-            }
-            else if (elems == 0) {
+            } else if (elems == 0) {
                 reporter.notifyError("Empty CSS selector definition");
             }
         }

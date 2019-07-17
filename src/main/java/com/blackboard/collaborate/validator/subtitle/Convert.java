@@ -102,6 +102,8 @@ public class Convert {
 
     /**
      * Run convert command line
+     * @param args Arguments
+     * @return Status
      */
     public int run(String[] args) {
         // Create the parser

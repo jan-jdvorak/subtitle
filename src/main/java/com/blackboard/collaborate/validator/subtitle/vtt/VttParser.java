@@ -148,8 +148,7 @@ public class VttParser extends BaseSubtitleParser {
                     parseRegion(vttRegion, textLine);
                     if (vttRegion.getId() == null) {
                         notifyError("Missing region id" );
-                    }
-                    else if (!vttObject.addRegion(vttRegion)) {
+                    } else if (!vttObject.addRegion(vttRegion)) {
                         notifyError("Duplicated region id: " + vttRegion.getId() );
                     }
                     break;
