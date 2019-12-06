@@ -36,6 +36,7 @@ public class SrtCue extends BaseSubtitleCue {
     private static final String TAG_BOLD = "b";
     private static final String TAG_ITALIC = "i";
     private static final String TAG_UNDERLINE = "u";
+    private static final String TAG_FONT = "font";
     private static final String[] EMPTY_CLASSES = new String[0];
 
     static final String ARROW = "-->";
@@ -259,13 +260,28 @@ public class SrtCue extends BaseSubtitleCue {
         }
     }
 
-    private CueData startTag(CueTreeNode current, String tagName) {
+    private CueData startTag(CueTreeNode current, String wholeName) {
         String annotation;
+        String tagName;
+
+        int annotationStartIndex = wholeName.indexOf(' ');
+        if (annotationStartIndex == -1) {
+            annotation = "";
+            tagName = wholeName;
+        } else {
+            annotation = wholeName.substring(annotationStartIndex).trim();
+            tagName = wholeName.substring(0, annotationStartIndex);
+        }
 
         switch (tagName) {
             case TAG_BOLD: // just styling
             case TAG_ITALIC: // just styling
             case TAG_UNDERLINE: // just styling
+                if (annotation.length() > 0) {
+                    reporter.notifyWarning("Tag does not support annotations: <" + tagName + ">");
+                    annotation = "";
+                }
+            case TAG_FONT: // just styling
                 break;
             default:
                 reporter.notifyWarning("Unknown cue tag: <" + tagName + ">");
@@ -274,7 +290,7 @@ public class SrtCue extends BaseSubtitleCue {
 
         checkNesting(current, tagName);
 
-        return new CueElemData(tagName, EMPTY_CLASSES, "");
+        return new CueElemData(tagName, EMPTY_CLASSES, annotation);
     }
 
     private void endTag(CueTreeNode current) {
