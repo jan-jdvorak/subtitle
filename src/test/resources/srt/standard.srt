@@ -10,7 +10,7 @@ Very good, <b>Lieutenant</b>.
 3
 00:04:17,440 --> 00:04:20,375
 Senator, we're making
-our final approach into Coruscant.
+our <font color="#223344" size="18">final</font> approach into Coruscant.
 
 4
 00:05:20,476 --> 00:05:22,501
