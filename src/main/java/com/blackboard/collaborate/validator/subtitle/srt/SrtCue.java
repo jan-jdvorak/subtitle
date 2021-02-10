@@ -225,7 +225,11 @@ public class SrtCue extends BaseSubtitleCue {
                 if (ok && !hasSemicol) {
                     builder.append(";"); // add missing semilocon
                 }
-                builder.append(c);
+                builder.append((char)c);
+
+                if (c == '\n')
+                    wasNL = true;
+
             } else {
                 switch (tagStatus) {
                     case CLOSE:
